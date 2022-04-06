@@ -2320,6 +2320,113 @@
 <span id="2315">2315</span>
 <span id="2316">2316</span>
 <span id="2317">2317</span>
+<span id="2318">2318</span>
+<span id="2319">2319</span>
+<span id="2320">2320</span>
+<span id="2321">2321</span>
+<span id="2322">2322</span>
+<span id="2323">2323</span>
+<span id="2324">2324</span>
+<span id="2325">2325</span>
+<span id="2326">2326</span>
+<span id="2327">2327</span>
+<span id="2328">2328</span>
+<span id="2329">2329</span>
+<span id="2330">2330</span>
+<span id="2331">2331</span>
+<span id="2332">2332</span>
+<span id="2333">2333</span>
+<span id="2334">2334</span>
+<span id="2335">2335</span>
+<span id="2336">2336</span>
+<span id="2337">2337</span>
+<span id="2338">2338</span>
+<span id="2339">2339</span>
+<span id="2340">2340</span>
+<span id="2341">2341</span>
+<span id="2342">2342</span>
+<span id="2343">2343</span>
+<span id="2344">2344</span>
+<span id="2345">2345</span>
+<span id="2346">2346</span>
+<span id="2347">2347</span>
+<span id="2348">2348</span>
+<span id="2349">2349</span>
+<span id="2350">2350</span>
+<span id="2351">2351</span>
+<span id="2352">2352</span>
+<span id="2353">2353</span>
+<span id="2354">2354</span>
+<span id="2355">2355</span>
+<span id="2356">2356</span>
+<span id="2357">2357</span>
+<span id="2358">2358</span>
+<span id="2359">2359</span>
+<span id="2360">2360</span>
+<span id="2361">2361</span>
+<span id="2362">2362</span>
+<span id="2363">2363</span>
+<span id="2364">2364</span>
+<span id="2365">2365</span>
+<span id="2366">2366</span>
+<span id="2367">2367</span>
+<span id="2368">2368</span>
+<span id="2369">2369</span>
+<span id="2370">2370</span>
+<span id="2371">2371</span>
+<span id="2372">2372</span>
+<span id="2373">2373</span>
+<span id="2374">2374</span>
+<span id="2375">2375</span>
+<span id="2376">2376</span>
+<span id="2377">2377</span>
+<span id="2378">2378</span>
+<span id="2379">2379</span>
+<span id="2380">2380</span>
+<span id="2381">2381</span>
+<span id="2382">2382</span>
+<span id="2383">2383</span>
+<span id="2384">2384</span>
+<span id="2385">2385</span>
+<span id="2386">2386</span>
+<span id="2387">2387</span>
+<span id="2388">2388</span>
+<span id="2389">2389</span>
+<span id="2390">2390</span>
+<span id="2391">2391</span>
+<span id="2392">2392</span>
+<span id="2393">2393</span>
+<span id="2394">2394</span>
+<span id="2395">2395</span>
+<span id="2396">2396</span>
+<span id="2397">2397</span>
+<span id="2398">2398</span>
+<span id="2399">2399</span>
+<span id="2400">2400</span>
+<span id="2401">2401</span>
+<span id="2402">2402</span>
+<span id="2403">2403</span>
+<span id="2404">2404</span>
+<span id="2405">2405</span>
+<span id="2406">2406</span>
+<span id="2407">2407</span>
+<span id="2408">2408</span>
+<span id="2409">2409</span>
+<span id="2410">2410</span>
+<span id="2411">2411</span>
+<span id="2412">2412</span>
+<span id="2413">2413</span>
+<span id="2414">2414</span>
+<span id="2415">2415</span>
+<span id="2416">2416</span>
+<span id="2417">2417</span>
+<span id="2418">2418</span>
+<span id="2419">2419</span>
+<span id="2420">2420</span>
+<span id="2421">2421</span>
+<span id="2422">2422</span>
+<span id="2423">2423</span>
+<span id="2424">2424</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>},
     <span class="ident">convert::AsRef</span>,
@@ -2963,6 +3070,17 @@ print(&quot;mingw&quot;, get_platform().startswith(&quot;mingw&quot;))
     }
 }
 
+<span class="doccomment">/// Checks if we should look for a Python interpreter installation</span>
+<span class="doccomment">/// to get the target interpreter configuration.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Returns `false` if `PYO3_NO_PYTHON` environment variable is set.</span>
+<span class="kw">fn</span> <span class="ident">have_python_interpreter</span>() -&gt; <span class="ident">bool</span> {
+    <span class="ident">env_var</span>(<span class="string">&quot;PYO3_NO_PYTHON&quot;</span>).<span class="ident">is_none</span>()
+}
+
+<span class="doccomment">/// Checks if `abi3` or any of the `abi3-py3*` features is enabled for the PyO3 crate.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Must be called from a PyO3 crate build script.</span>
 <span class="kw">fn</span> <span class="ident">is_abi3</span>() -&gt; <span class="ident">bool</span> {
     <span class="ident">cargo_env_var</span>(<span class="string">&quot;CARGO_FEATURE_ABI3&quot;</span>).<span class="ident">is_some</span>()
 }
@@ -3709,6 +3827,46 @@ for key, val in build_time_vars.items():
     })
 }
 
+<span class="doccomment">/// Generates &quot;default&quot; interpreter configuration when compiling &quot;abi3&quot; extensions</span>
+<span class="doccomment">/// without a working Python interpreter.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// `version` specifies the minimum supported Stable ABI CPython version.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This should work for most CPython extension modules when compiling on</span>
+<span class="doccomment">/// Windows, macOS and Linux.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Must be called from a PyO3 crate build script.</span>
+<span class="kw">fn</span> <span class="ident">default_abi3_config</span>(<span class="ident">host</span>: <span class="kw-2">&amp;</span><span class="ident">Triple</span>, <span class="ident">version</span>: <span class="ident">PythonVersion</span>) -&gt; <span class="ident">InterpreterConfig</span> {
+    <span class="comment">// FIXME: PyPy does not support the Stable ABI yet.</span>
+    <span class="kw">let</span> <span class="ident">implementation</span> <span class="op">=</span> <span class="ident">PythonImplementation::CPython</span>;
+    <span class="kw">let</span> <span class="ident">abi3</span> <span class="op">=</span> <span class="bool-val">true</span>;
+
+    <span class="kw">let</span> <span class="ident">lib_name</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">host</span>.<span class="ident">operating_system</span> <span class="op">==</span> <span class="ident">OperatingSystem::Windows</span> {
+        <span class="prelude-val">Some</span>(<span class="ident">default_lib_name_windows</span>(
+            <span class="ident">version</span>,
+            <span class="ident">implementation</span>,
+            <span class="ident">abi3</span>,
+            <span class="bool-val">false</span>,
+        ))
+    } <span class="kw">else</span> {
+        <span class="prelude-val">None</span>
+    };
+
+    <span class="ident">InterpreterConfig</span> {
+        <span class="ident">implementation</span>,
+        <span class="ident">version</span>,
+        <span class="ident">shared</span>: <span class="bool-val">true</span>,
+        <span class="ident">abi3</span>,
+        <span class="ident">lib_name</span>,
+        <span class="ident">lib_dir</span>: <span class="prelude-val">None</span>,
+        <span class="ident">executable</span>: <span class="prelude-val">None</span>,
+        <span class="ident">pointer_width</span>: <span class="prelude-val">None</span>,
+        <span class="ident">build_flags</span>: <span class="ident">BuildFlags::default</span>(),
+        <span class="ident">suppress_build_script_link_lines</span>: <span class="bool-val">false</span>,
+        <span class="ident">extra_build_script_lines</span>: <span class="macro">vec!</span>[],
+    }
+}
+
 <span class="doccomment">/// Detects the cross compilation target interpreter configuration from all</span>
 <span class="doccomment">/// available sources (PyO3 environment variables, Python sysconfigdata, etc.).</span>
 <span class="doccomment">///</span>
@@ -3719,30 +3877,31 @@ for key, val in build_time_vars.items():
 <span class="kw">fn</span> <span class="ident">load_cross_compile_config</span>(
     <span class="ident">cross_compile_config</span>: <span class="ident">CrossCompileConfig</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">InterpreterConfig</span><span class="op">&gt;</span> {
-    <span class="comment">// Load the defaults for Windows even when `PYO3_CROSS_LIB_DIR` is set</span>
-    <span class="comment">// since it has no sysconfigdata files in it.</span>
-    <span class="kw">if</span> <span class="ident">cross_compile_config</span>.<span class="ident">target</span>.<span class="ident">operating_system</span> <span class="op">==</span> <span class="ident">OperatingSystem::Windows</span> {
-        <span class="kw">return</span> <span class="ident">default_cross_compile</span>(<span class="kw-2">&amp;</span><span class="ident">cross_compile_config</span>);
-    }
+    <span class="kw">let</span> <span class="ident">windows</span> <span class="op">=</span> <span class="ident">cross_compile_config</span>.<span class="ident">target</span>.<span class="ident">operating_system</span> <span class="op">==</span> <span class="ident">OperatingSystem::Windows</span>;
 
-    <span class="comment">// Try to find and parse sysconfigdata files on other targets</span>
-    <span class="comment">// and fall back to the defaults when none are found.</span>
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">config</span>) <span class="op">=</span> <span class="ident">cross_compile_from_sysconfigdata</span>(<span class="kw-2">&amp;</span><span class="ident">cross_compile_config</span>)<span class="question-mark">?</span> {
-        <span class="prelude-val">Ok</span>(<span class="ident">config</span>)
+    <span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">windows</span> <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">have_python_interpreter</span>() {
+        <span class="comment">// Load the defaults for Windows even when `PYO3_CROSS_LIB_DIR` is set</span>
+        <span class="comment">// since it has no sysconfigdata files in it.</span>
+        <span class="comment">// Also, do not try to look for sysconfigdata when `PYO3_NO_PYTHON` variable is set.</span>
+        <span class="ident">default_cross_compile</span>(<span class="kw-2">&amp;</span><span class="ident">cross_compile_config</span>)<span class="question-mark">?</span>
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">config</span>) <span class="op">=</span> <span class="ident">cross_compile_from_sysconfigdata</span>(<span class="kw-2">&amp;</span><span class="ident">cross_compile_config</span>)<span class="question-mark">?</span> {
+        <span class="comment">// Try to find and parse sysconfigdata files on other targets.</span>
+        <span class="ident">config</span>
     } <span class="kw">else</span> {
-        <span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">default_cross_compile</span>(<span class="kw-2">&amp;</span><span class="ident">cross_compile_config</span>)<span class="question-mark">?</span>;
+        <span class="comment">// Fall back to the defaults when nothing else can be done.</span>
+        <span class="ident">default_cross_compile</span>(<span class="kw-2">&amp;</span><span class="ident">cross_compile_config</span>)<span class="question-mark">?</span>
+    };
 
-        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">lib_name</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">lib_dir</span>.<span class="ident">is_none</span>() {
-            <span class="macro">warn!</span>(
-                <span class="string">&quot;The output binary will link to libpython, \
-                but PYO3_CROSS_LIB_DIR environment variable is not set. \
-                Ensure that the target Python library directory is \
-                in the rustc native library search path.&quot;</span>
-            );
-        }
-
-        <span class="prelude-val">Ok</span>(<span class="ident">config</span>)
+    <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">lib_name</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">lib_dir</span>.<span class="ident">is_none</span>() {
+        <span class="macro">warn!</span>(
+            <span class="string">&quot;The output binary will link to libpython, \
+            but PYO3_CROSS_LIB_DIR environment variable is not set. \
+            Ensure that the target Python library directory is \
+            in the rustc native library search path.&quot;</span>
+        );
     }
+
+    <span class="prelude-val">Ok</span>(<span class="ident">config</span>)
 }
 
 <span class="comment">// Link against python3.lib for the stable ABI on Windows.</span>
@@ -3913,9 +4072,18 @@ for key, val in build_time_vars.items():
 <span class="doccomment">/// Only used by `pyo3-build-config` build script.</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_interpreter_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">InterpreterConfig</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">interpreter_config</span> <span class="op">=</span> <span class="ident">InterpreterConfig::from_interpreter</span>(<span class="ident">find_interpreter</span>()<span class="question-mark">?</span>)<span class="question-mark">?</span>;
-    <span class="ident">interpreter_config</span>.<span class="ident">fixup_for_abi3_version</span>(<span class="ident">get_abi3_version</span>())<span class="question-mark">?</span>;
-    <span class="prelude-val">Ok</span>(<span class="ident">interpreter_config</span>)
+    <span class="kw">let</span> <span class="ident">abi3_version</span> <span class="op">=</span> <span class="ident">get_abi3_version</span>();
+
+    <span class="kw">if</span> <span class="ident">have_python_interpreter</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">interpreter_config</span> <span class="op">=</span> <span class="ident">InterpreterConfig::from_interpreter</span>(<span class="ident">find_interpreter</span>()<span class="question-mark">?</span>)<span class="question-mark">?</span>;
+        <span class="ident">interpreter_config</span>.<span class="ident">fixup_for_abi3_version</span>(<span class="ident">abi3_version</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="ident">interpreter_config</span>)
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">version</span>) <span class="op">=</span> <span class="ident">abi3_version</span> {
+        <span class="kw">let</span> <span class="ident">host</span> <span class="op">=</span> <span class="ident">Triple::host</span>();
+        <span class="prelude-val">Ok</span>(<span class="ident">default_abi3_config</span>(<span class="kw-2">&amp;</span><span class="ident">host</span>, <span class="ident">version</span>))
+    } <span class="kw">else</span> {
+        <span class="macro">bail!</span>(<span class="string">&quot;An abi3-py3* feature must be specified when compiling without a Python interpreter.&quot;</span>)
+    }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -4160,6 +4328,52 @@ for key, val in build_time_vars.items():
                 <span class="ident">lib_name</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;python3.7m&quot;</span>.<span class="ident">into</span>()),
                 <span class="ident">shared</span>: <span class="bool-val">false</span>,
                 <span class="ident">version</span>: <span class="ident">PythonVersion::PY37</span>,
+                <span class="ident">suppress_build_script_link_lines</span>: <span class="bool-val">false</span>,
+                <span class="ident">extra_build_script_lines</span>: <span class="macro">vec!</span>[],
+            }
+        );
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">windows_hardcoded_abi3_compile</span>() {
+        <span class="kw">let</span> <span class="ident">host</span> <span class="op">=</span> <span class="macro">triple!</span>(<span class="string">&quot;x86_64-pc-windows-msvc&quot;</span>);
+        <span class="kw">let</span> <span class="ident">min_version</span> <span class="op">=</span> <span class="string">&quot;3.7&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>();
+
+        <span class="macro">assert_eq!</span>(
+            <span class="ident">default_abi3_config</span>(<span class="kw-2">&amp;</span><span class="ident">host</span>, <span class="ident">min_version</span>),
+            <span class="ident">InterpreterConfig</span> {
+                <span class="ident">implementation</span>: <span class="ident">PythonImplementation::CPython</span>,
+                <span class="ident">version</span>: <span class="ident">PythonVersion</span> { <span class="ident">major</span>: <span class="number">3</span>, <span class="ident">minor</span>: <span class="number">7</span> },
+                <span class="ident">shared</span>: <span class="bool-val">true</span>,
+                <span class="ident">abi3</span>: <span class="bool-val">true</span>,
+                <span class="ident">lib_name</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;python3&quot;</span>.<span class="ident">into</span>()),
+                <span class="ident">lib_dir</span>: <span class="prelude-val">None</span>,
+                <span class="ident">executable</span>: <span class="prelude-val">None</span>,
+                <span class="ident">pointer_width</span>: <span class="prelude-val">None</span>,
+                <span class="ident">build_flags</span>: <span class="ident">BuildFlags::default</span>(),
+                <span class="ident">suppress_build_script_link_lines</span>: <span class="bool-val">false</span>,
+                <span class="ident">extra_build_script_lines</span>: <span class="macro">vec!</span>[],
+            }
+        );
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">unix_hardcoded_abi3_compile</span>() {
+        <span class="kw">let</span> <span class="ident">host</span> <span class="op">=</span> <span class="macro">triple!</span>(<span class="string">&quot;x86_64-unknown-linux-gnu&quot;</span>);
+        <span class="kw">let</span> <span class="ident">min_version</span> <span class="op">=</span> <span class="string">&quot;3.9&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>();
+
+        <span class="macro">assert_eq!</span>(
+            <span class="ident">default_abi3_config</span>(<span class="kw-2">&amp;</span><span class="ident">host</span>, <span class="ident">min_version</span>),
+            <span class="ident">InterpreterConfig</span> {
+                <span class="ident">implementation</span>: <span class="ident">PythonImplementation::CPython</span>,
+                <span class="ident">version</span>: <span class="ident">PythonVersion</span> { <span class="ident">major</span>: <span class="number">3</span>, <span class="ident">minor</span>: <span class="number">9</span> },
+                <span class="ident">shared</span>: <span class="bool-val">true</span>,
+                <span class="ident">abi3</span>: <span class="bool-val">true</span>,
+                <span class="ident">lib_name</span>: <span class="prelude-val">None</span>,
+                <span class="ident">lib_dir</span>: <span class="prelude-val">None</span>,
+                <span class="ident">executable</span>: <span class="prelude-val">None</span>,
+                <span class="ident">pointer_width</span>: <span class="prelude-val">None</span>,
+                <span class="ident">build_flags</span>: <span class="ident">BuildFlags::default</span>(),
                 <span class="ident">suppress_build_script_link_lines</span>: <span class="bool-val">false</span>,
                 <span class="ident">extra_build_script_lines</span>: <span class="macro">vec!</span>[],
             }
@@ -4638,5 +4852,5 @@ for key, val in build_time_vars.items():
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pyo3_build_config" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (60e50fc1c 2022-04-04)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pyo3_build_config" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (306ba8357 2022-04-05)" ></div>
 </body></html>
