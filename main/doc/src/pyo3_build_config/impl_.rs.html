@@ -2427,6 +2427,19 @@
 <span id="2422">2422</span>
 <span id="2423">2423</span>
 <span id="2424">2424</span>
+<span id="2425">2425</span>
+<span id="2426">2426</span>
+<span id="2427">2427</span>
+<span id="2428">2428</span>
+<span id="2429">2429</span>
+<span id="2430">2430</span>
+<span id="2431">2431</span>
+<span id="2432">2432</span>
+<span id="2433">2433</span>
+<span id="2434">2434</span>
+<span id="2435">2435</span>
+<span id="2436">2436</span>
+<span id="2437">2437</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>},
     <span class="ident">convert::AsRef</span>,
@@ -3934,7 +3947,15 @@ for key, val in build_time_vars.items():
     <span class="kw">match</span> <span class="ident">implementation</span> {
         <span class="ident">PythonImplementation::CPython</span> =&gt; <span class="kw">match</span> <span class="ident">ld_version</span> {
             <span class="prelude-val">Some</span>(<span class="ident">ld_version</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;python{}&quot;</span>, <span class="ident">ld_version</span>),
-            <span class="prelude-val">None</span> =&gt; <span class="macro">format!</span>(<span class="string">&quot;python{}.{}&quot;</span>, <span class="ident">version</span>.<span class="ident">major</span>, <span class="ident">version</span>.<span class="ident">minor</span>),
+            <span class="prelude-val">None</span> =&gt; {
+                <span class="kw">if</span> <span class="ident">version</span> <span class="op">&gt;</span> <span class="ident">PythonVersion::PY37</span> {
+                    <span class="comment">// PEP 3149 ABI version tags are finally gone</span>
+                    <span class="macro">format!</span>(<span class="string">&quot;python{}.{}&quot;</span>, <span class="ident">version</span>.<span class="ident">major</span>, <span class="ident">version</span>.<span class="ident">minor</span>)
+                } <span class="kw">else</span> {
+                    <span class="comment">// Work around https://bugs.python.org/issue36707</span>
+                    <span class="macro">format!</span>(<span class="string">&quot;python{}.{}m&quot;</span>, <span class="ident">version</span>.<span class="ident">major</span>, <span class="ident">version</span>.<span class="ident">minor</span>)
+                }
+            }
         },
         <span class="ident">PythonImplementation::PyPy</span> =&gt; {
             <span class="kw">if</span> <span class="ident">version</span> <span class="op">&gt;</span><span class="op">=</span> (<span class="ident">PythonVersion</span> { <span class="ident">major</span>: <span class="number">3</span>, <span class="ident">minor</span>: <span class="number">9</span> }) {
@@ -4571,10 +4592,15 @@ for key, val in build_time_vars.items():
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">default_lib_name_unix</span>() {
         <span class="kw">use</span> <span class="ident">PythonImplementation</span>::<span class="kw-2">*</span>;
-        <span class="comment">// Defaults to pythonX.Y for CPython</span>
+        <span class="comment">// Defaults to python3.7m for CPython 3.7</span>
         <span class="macro">assert_eq!</span>(
             <span class="ident"><span class="kw">super</span>::default_lib_name_unix</span>(<span class="ident">PythonVersion</span> { <span class="ident">major</span>: <span class="number">3</span>, <span class="ident">minor</span>: <span class="number">7</span> }, <span class="ident">CPython</span>, <span class="prelude-val">None</span>),
-            <span class="string">&quot;python3.7&quot;</span>,
+            <span class="string">&quot;python3.7m&quot;</span>,
+        );
+        <span class="comment">// Defaults to pythonX.Y for CPython 3.8+</span>
+        <span class="macro">assert_eq!</span>(
+            <span class="ident"><span class="kw">super</span>::default_lib_name_unix</span>(<span class="ident">PythonVersion</span> { <span class="ident">major</span>: <span class="number">3</span>, <span class="ident">minor</span>: <span class="number">8</span> }, <span class="ident">CPython</span>, <span class="prelude-val">None</span>),
+            <span class="string">&quot;python3.8&quot;</span>,
         );
         <span class="macro">assert_eq!</span>(
             <span class="ident"><span class="kw">super</span>::default_lib_name_unix</span>(<span class="ident">PythonVersion</span> { <span class="ident">major</span>: <span class="number">3</span>, <span class="ident">minor</span>: <span class="number">9</span> }, <span class="ident">CPython</span>, <span class="prelude-val">None</span>),
@@ -4852,5 +4878,5 @@ for key, val in build_time_vars.items():
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pyo3_build_config" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (e745b4ddb 2022-04-07)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pyo3_build_config" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (f4a7ce997 2022-04-08)" ></div>
 </body></html>
