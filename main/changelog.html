@@ -162,6 +162,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
 <ul>
 <li>Fix segfault when calling FFI methods <code>PyDateTime_DATE_GET_TZINFO</code> or <code>PyDateTime_TIME_GET_TZINFO</code> on <code>datetime</code> or <code>time</code> without a tzinfo. <a href="https://github.com/PyO3/pyo3/pull/2289">#2289</a></li>
+<li>Fix directory names starting with the letter <code>n</code> breaking serialization of the interpreter configuration on Windows since PyO3 0.16.3. <a href="https://github.com/PyO3/pyo3/pull/2299">#2299</a></li>
 </ul>
 <h2 id="a-hrefhttpsgithubcompyo3pyo3comparev0162v01630163a---2022-04-05"><a class="header" href="#a-hrefhttpsgithubcompyo3pyo3comparev0162v01630163a---2022-04-05"><a href="https://github.com/pyo3/pyo3/compare/v0.16.2...v0.16.3">0.16.3</a> - 2022-04-05</a></h2>
 <h3 id="packaging"><a class="header" href="#packaging">Packaging</a></h3>
