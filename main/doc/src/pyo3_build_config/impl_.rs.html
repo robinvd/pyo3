@@ -2509,6 +2509,51 @@
 <span id="2504">2504</span>
 <span id="2505">2505</span>
 <span id="2506">2506</span>
+<span id="2507">2507</span>
+<span id="2508">2508</span>
+<span id="2509">2509</span>
+<span id="2510">2510</span>
+<span id="2511">2511</span>
+<span id="2512">2512</span>
+<span id="2513">2513</span>
+<span id="2514">2514</span>
+<span id="2515">2515</span>
+<span id="2516">2516</span>
+<span id="2517">2517</span>
+<span id="2518">2518</span>
+<span id="2519">2519</span>
+<span id="2520">2520</span>
+<span id="2521">2521</span>
+<span id="2522">2522</span>
+<span id="2523">2523</span>
+<span id="2524">2524</span>
+<span id="2525">2525</span>
+<span id="2526">2526</span>
+<span id="2527">2527</span>
+<span id="2528">2528</span>
+<span id="2529">2529</span>
+<span id="2530">2530</span>
+<span id="2531">2531</span>
+<span id="2532">2532</span>
+<span id="2533">2533</span>
+<span id="2534">2534</span>
+<span id="2535">2535</span>
+<span id="2536">2536</span>
+<span id="2537">2537</span>
+<span id="2538">2538</span>
+<span id="2539">2539</span>
+<span id="2540">2540</span>
+<span id="2541">2541</span>
+<span id="2542">2542</span>
+<span id="2543">2543</span>
+<span id="2544">2544</span>
+<span id="2545">2545</span>
+<span id="2546">2546</span>
+<span id="2547">2547</span>
+<span id="2548">2548</span>
+<span id="2549">2549</span>
+<span id="2550">2550</span>
+<span id="2551">2551</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Main implementation module included in both the `pyo3-build-config` library crate</span>
 <span class="doccomment">//! and its build script.</span>
 
@@ -2744,6 +2789,13 @@ print(&quot;mingw&quot;, get_platform().startswith(&quot;mingw&quot;))
 &quot;#</span>;
         <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">run_python_script</span>(<span class="ident">interpreter</span>.<span class="ident">as_ref</span>(), <span class="ident">SCRIPT</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">map</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">parse_script_output</span>(<span class="kw-2">&amp;</span><span class="ident">output</span>);
+
+        <span class="macro">ensure!</span>(
+            <span class="op">!</span><span class="ident">map</span>.<span class="ident">is_empty</span>(),
+            <span class="string">&quot;broken Python interpreter: {}&quot;</span>,
+            <span class="ident">interpreter</span>.<span class="ident">as_ref</span>().<span class="ident">display</span>()
+        );
+
         <span class="kw">let</span> <span class="ident">shared</span> <span class="op">=</span> <span class="ident">map</span>[<span class="string">&quot;shared&quot;</span>].<span class="ident">as_str</span>() <span class="op">==</span> <span class="string">&quot;True&quot;</span>;
 
         <span class="kw">let</span> <span class="ident">version</span> <span class="op">=</span> <span class="ident">PythonVersion</span> {
@@ -3189,19 +3241,31 @@ print(&quot;mingw&quot;, get_platform().startswith(&quot;mingw&quot;))
 
 <span class="doccomment">/// Checks if we need to link to `libpython` for the current build target.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Must be called from a crate PyO3 build script.</span>
+<span class="doccomment">/// Must be called from a PyO3 crate build script.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_linking_libpython</span>() -&gt; <span class="ident">bool</span> {
     <span class="ident">is_linking_libpython_for_target</span>(<span class="kw-2">&amp;</span><span class="ident">target_triple_from_env</span>())
 }
 
 <span class="doccomment">/// Checks if we need to link to `libpython` for the target.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Must be called from a crate PyO3 build script.</span>
+<span class="doccomment">/// Must be called from a PyO3 crate build script.</span>
 <span class="kw">fn</span> <span class="ident">is_linking_libpython_for_target</span>(<span class="ident">target</span>: <span class="kw-2">&amp;</span><span class="ident">Triple</span>) -&gt; <span class="ident">bool</span> {
     <span class="ident">target</span>.<span class="ident">operating_system</span> <span class="op">==</span> <span class="ident">OperatingSystem::Windows</span>
         <span class="op">|</span><span class="op">|</span> <span class="ident">target</span>.<span class="ident">environment</span> <span class="op">==</span> <span class="ident">Environment::Android</span>
         <span class="op">|</span><span class="op">|</span> <span class="ident">target</span>.<span class="ident">environment</span> <span class="op">==</span> <span class="ident">Environment::Androideabi</span>
         <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">is_extension_module</span>()
+}
+
+<span class="doccomment">/// Checks if we need to discover the Python library directory</span>
+<span class="doccomment">/// to link the extension module binary.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Must be called from a PyO3 crate build script.</span>
+<span class="kw">fn</span> <span class="ident">require_libdir_for_target</span>(<span class="ident">target</span>: <span class="kw-2">&amp;</span><span class="ident">Triple</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">let</span> <span class="ident">is_generating_libpython</span> <span class="op">=</span> <span class="macro">cfg!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;python3-dll-a&quot;</span>)
+        <span class="op">&amp;&amp;</span> <span class="ident">target</span>.<span class="ident">operating_system</span> <span class="op">==</span> <span class="ident">OperatingSystem::Windows</span>
+        <span class="op">&amp;&amp;</span> <span class="ident">is_abi3</span>();
+
+    <span class="ident">is_linking_libpython_for_target</span>(<span class="ident">target</span>) <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">is_generating_libpython</span>
 }
 
 <span class="doccomment">/// Configuration needed by PyO3 to cross-compile for a target platform.</span>
@@ -4153,6 +4217,18 @@ for key, val in build_time_vars.items():
     }
 }
 
+<span class="doccomment">/// Locates and extracts the build host Python interpreter configuration.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Lowers the configured Python version to `abi3_version` if required.</span>
+<span class="kw">fn</span> <span class="ident">get_host_interpreter</span>(<span class="ident">abi3_version</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PythonVersion</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">InterpreterConfig</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">interpreter_path</span> <span class="op">=</span> <span class="ident">find_interpreter</span>()<span class="question-mark">?</span>;
+
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">interpreter_config</span> <span class="op">=</span> <span class="ident">InterpreterConfig::from_interpreter</span>(<span class="ident">interpreter_path</span>)<span class="question-mark">?</span>;
+    <span class="ident">interpreter_config</span>.<span class="ident">fixup_for_abi3_version</span>(<span class="ident">abi3_version</span>)<span class="question-mark">?</span>;
+
+    <span class="prelude-val">Ok</span>(<span class="ident">interpreter_config</span>)
+}
+
 <span class="doccomment">/// Generates an interpreter config suitable for cross-compilation.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This must be called from PyO3&#39;s build script, because it relies on environment variables such as</span>
@@ -4173,26 +4249,40 @@ for key, val in build_time_vars.items():
 <span class="doccomment">/// Only used by `pyo3-build-config` build script.</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>, <span class="ident">unused_mut</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_interpreter_config</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">InterpreterConfig</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">host</span> <span class="op">=</span> <span class="ident">Triple::host</span>();
     <span class="kw">let</span> <span class="ident">abi3_version</span> <span class="op">=</span> <span class="ident">get_abi3_version</span>();
 
+    <span class="comment">// See if we can safely skip the Python interpreter configuration detection.</span>
+    <span class="comment">// Unix &quot;abi3&quot; extension modules can usually be built without any interpreter.</span>
+    <span class="kw">let</span> <span class="ident">need_interpreter</span> <span class="op">=</span> <span class="ident">abi3_version</span>.<span class="ident">is_none</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">require_libdir_for_target</span>(<span class="kw-2">&amp;</span><span class="ident">host</span>);
+
     <span class="kw">if</span> <span class="ident">have_python_interpreter</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">interpreter_config</span> <span class="op">=</span> <span class="ident">InterpreterConfig::from_interpreter</span>(<span class="ident">find_interpreter</span>()<span class="question-mark">?</span>)<span class="question-mark">?</span>;
-        <span class="ident">interpreter_config</span>.<span class="ident">fixup_for_abi3_version</span>(<span class="ident">abi3_version</span>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">interpreter_config</span>)
-    } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">version</span>) <span class="op">=</span> <span class="ident">abi3_version</span> {
-        <span class="kw">let</span> <span class="ident">host</span> <span class="op">=</span> <span class="ident">Triple::host</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">interpreter_config</span> <span class="op">=</span> <span class="ident">default_abi3_config</span>(<span class="kw-2">&amp;</span><span class="ident">host</span>, <span class="ident">version</span>);
-
-        <span class="comment">// Auto generate python3.dll import libraries for Windows targets.</span>
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;python3-dll-a&quot;</span>)]</span>
-        {
-            <span class="ident">interpreter_config</span>.<span class="ident">lib_dir</span> <span class="op">=</span> <span class="ident"><span class="self">self</span>::abi3_import_lib::generate_abi3_import_lib</span>(<span class="kw-2">&amp;</span><span class="ident">host</span>)<span class="question-mark">?</span>;
+        <span class="kw">match</span> <span class="ident">get_host_interpreter</span>(<span class="ident">abi3_version</span>) {
+            <span class="prelude-val">Ok</span>(<span class="ident">interpreter_config</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">interpreter_config</span>),
+            <span class="comment">// Bail if the interpreter configuration is required to build.</span>
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="kw">if</span> <span class="ident">need_interpreter</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>),
+            <span class="kw">_</span> =&gt; {
+                <span class="comment">// Fall back to the &quot;abi3&quot; defaults just as if `PYO3_NO_PYTHON`</span>
+                <span class="comment">// environment variable was set.</span>
+                <span class="macro">warn!</span>(<span class="string">&quot;Compiling without a working Python interpreter.&quot;</span>);
+            }
         }
-
-        <span class="prelude-val">Ok</span>(<span class="ident">interpreter_config</span>)
     } <span class="kw">else</span> {
-        <span class="macro">bail!</span>(<span class="string">&quot;An abi3-py3* feature must be specified when compiling without a Python interpreter.&quot;</span>)
+        <span class="macro">ensure!</span>(
+            <span class="ident">abi3_version</span>.<span class="ident">is_some</span>(),
+            <span class="string">&quot;An abi3-py3* feature must be specified when compiling without a Python interpreter.&quot;</span>
+        );
+    };
+
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">interpreter_config</span> <span class="op">=</span> <span class="ident">default_abi3_config</span>(<span class="kw-2">&amp;</span><span class="ident">host</span>, <span class="ident">abi3_version</span>.<span class="ident">unwrap</span>());
+
+    <span class="comment">// Auto generate python3.dll import libraries for Windows targets.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;python3-dll-a&quot;</span>)]</span>
+    {
+        <span class="ident">interpreter_config</span>.<span class="ident">lib_dir</span> <span class="op">=</span> <span class="ident"><span class="self">self</span>::abi3_import_lib::generate_abi3_import_lib</span>(<span class="kw-2">&amp;</span><span class="ident">host</span>)<span class="question-mark">?</span>;
     }
+
+    <span class="prelude-val">Ok</span>(<span class="ident">interpreter_config</span>)
 }
 
 <span class="kw">fn</span> <span class="ident">escape</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">String</span> {
@@ -5016,5 +5106,5 @@ for key, val in build_time_vars.items():
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pyo3_build_config" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (52ca603da 2022-04-12)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pyo3_build_config" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (34a6c9f26 2022-04-13)" ></div>
 </body></html>

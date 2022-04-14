@@ -264,6 +264,8 @@ For example, if you set the <code>abi3-py37</code> feature, your extension wheel
 </blockquote>
 <h4 id="building-abi3-extensions-without-a-python-interpreter"><a class="header" href="#building-abi3-extensions-without-a-python-interpreter">Building <code>abi3</code> extensions without a Python interpreter</a></h4>
 <p>As an advanced feature, you can build PyO3 wheel without calling Python interpreter with the environment variable <code>PYO3_NO_PYTHON</code> set.
+Also, if the build host Python interpreter is not found or is too old or otherwise unusable,
+PyO3 will still attempt to compile <code>abi3</code> extension modules after displaying a warning message.
 On Unix-like systems this works unconditionally; on Windows you must also set the <code>RUSTFLAGS</code> environment variable
 to contain <code>-L native=/path/to/python/libs</code> so that the linker can find <code>python3.lib</code>.</p>
 <p>If the <code>python3.dll</code> import library is not available, an experimental <code>generate-abi3-import-lib</code> crate
