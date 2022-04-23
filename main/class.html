@@ -200,7 +200,7 @@ enum MyEnum {
 <span class="boring">}
 </span></code></pre></pre>
 <p>Because Python objects are freely shared between threads by the Python interpreter, all types annotated with <code>#[pyclass]</code> must implement <code>Send</code> (unless annotated with <a href="#customizing-the-class"><code>#[pyclass(unsendable)]</code></a>).</p>
-<p>The above example generates implementations for <a href="https://pyo3.rs/main/doc/pyo3/type_object/trait.PyTypeInfo.html"><code>PyTypeInfo</code></a>, <a href="https://pyo3.rs/main/doc/pyo3/type_object/trait.PyTypeObject.html"><code>PyTypeObject</code></a>, and <a href="https://pyo3.rs/main/doc/pyo3/pyclass/trait.PyClass.html"><code>PyClass</code></a> for <code>MyClass</code> and <code>MyEnum</code>. To see these generated implementations, refer to the <a href="#implementation-details">implementation details</a> at the end of this chapter.</p>
+<p>The above example generates implementations for <a href="https://pyo3.rs/main/doc/pyo3/type_object/trait.PyTypeInfo.html"><code>PyTypeInfo</code></a> and <a href="https://pyo3.rs/main/doc/pyo3/pyclass/trait.PyClass.html"><code>PyClass</code></a> for <code>MyClass</code> and <code>MyEnum</code>. To see these generated implementations, refer to the <a href="#implementation-details">implementation details</a> at the end of this chapter.</p>
 <h2 id="constructor"><a class="header" href="#constructor">Constructor</a></h2>
 <p>By default it is not possible to create an instance of a custom class from Python code.
 To declare a constructor, you need to define a method and annotate it with the <code>#[new]</code>

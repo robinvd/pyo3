@@ -965,7 +965,7 @@
     <span class="ident">impl_::freelist::FreeList</span>,
     <span class="ident">pycell</span>::{<span class="ident">GetBorrowChecker</span>, <span class="ident">Mutability</span>, <span class="ident">PyCellLayout</span>, <span class="ident">PyClassMutability</span>},
     <span class="ident">pyclass_init::PyObjectInit</span>,
-    <span class="ident">type_object</span>::{<span class="ident">PyLayout</span>, <span class="ident">PyTypeObject</span>},
+    <span class="ident">type_object::PyLayout</span>,
     <span class="ident">Py</span>, <span class="ident">PyAny</span>, <span class="ident">PyCell</span>, <span class="ident">PyClass</span>, <span class="ident">PyErr</span>, <span class="ident">PyMethodDefType</span>, <span class="ident">PyNativeType</span>, <span class="ident">PyResult</span>, <span class="ident">PyTypeInfo</span>, <span class="ident">Python</span>,
 };
 <span class="kw">use</span> <span class="ident">std</span>::{
@@ -1123,7 +1123,7 @@
     <span class="kw">type</span> <span class="ident">Layout</span>: <span class="ident">PyLayout</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Base class</span>
-    <span class="kw">type</span> <span class="ident">BaseType</span>: <span class="ident">PyTypeInfo</span> <span class="op">+</span> <span class="ident">PyTypeObject</span> <span class="op">+</span> <span class="ident">PyClassBaseType</span>;
+    <span class="kw">type</span> <span class="ident">BaseType</span>: <span class="ident">PyTypeInfo</span> <span class="op">+</span> <span class="ident">PyClassBaseType</span>;
 
     <span class="doccomment">/// Immutable or mutable</span>
     <span class="kw">type</span> <span class="ident">Mutability</span>: <span class="ident">Mutability</span>;
