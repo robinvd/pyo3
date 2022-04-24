@@ -310,7 +310,7 @@
 }
 
 <span class="comment">// The following are a bunch of marker traits used to detect</span>
-<span class="comment">// the existance of a slotted method.</span>
+<span class="comment">// the existence of a slotted method.</span>
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PySequenceLenProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span>: <span class="ident">PySequenceProtocol</span><span class="op">&lt;</span><span class="lifetime">&#39;p</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="prelude-ty">Result</span>: <span class="ident">IntoPyCallbackOutput</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>;

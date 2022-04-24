@@ -270,7 +270,7 @@ as part of long-running Rust functions so that users can cancel it.</p>
 <h5 id="note"><a href="#note">Note</a></h5>
 <p>This function calls <a href="https://docs.python.org/3/c-api/exceptions.html?highlight=pyerr_checksignals#c.PyErr_CheckSignals"><code>PyErr_CheckSignals()</code></a> which in turn may call signal handlers.
 As Python’s <a href="https://docs.python.org/3/library/signal.html"><code>signal</code></a> API allows users to define custom signal handlers, calling this
-function allows arbitary Python code inside signal handlers to run.</p>
+function allows arbitrary Python code inside signal handlers to run.</p>
 </div></details><details class="rustdoc-toggle method-toggle" open><summary><section id="method.new_pool" class="method has-srclink"><span class="rightside"><a class="srclink" href="../../src/pyo3/marker.rs.html#865-867">source</a></span><a href="#method.new_pool" class="anchor"></a><h4 class="code-header">pub unsafe fn <a href="#method.new_pool" class="fnname">new_pool</a>(self) -&gt; <a class="struct" href="../gil/struct.GILPool.html" title="struct pyo3::gil::GILPool">GILPool</a></h4></section></summary><div class="docblock"><p>Create a new pool for managing PyO3’s owned references.</p>
 <p>When this <code>GILPool</code> is dropped, all PyO3 owned references created after this <code>GILPool</code> will
 all have their Python reference counts decremented, potentially allowing Python to drop
