@@ -155,6 +155,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </ul>
 <h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
 <ul>
+<li>Several methods of <code>Py</code> and <code>PyAny</code> now accept <code>impl IntoPy&lt;Py&lt;PyString&gt;&gt;</code> rather than just <code>&amp;str</code> to allow use of the <code>intern!</code> macro. <a href="https://github.com/PyO3/pyo3/pull/2312">#2312</a></li>
 <li>Move <code>PyTypeObject::type_object</code> method to <code>PyTypeInfo</code> trait, and deprecate <code>PyTypeObject</code> trait. <a href="https://github.com/PyO3/pyo3/pull/2287">#2287</a></li>
 <li>The deprecated <code>pyproto</code> feature is now disabled by default. <a href="https://github.com/PyO3/pyo3/pull/2322">#2322</a></li>
 <li>Deprecate <code>ToBorrowedObject</code> trait (it is only used as a wrapper for <code>ToPyObject</code>). <a href="https://github.com/PyO3/pyo3/pull/2333">#2333</a></li>

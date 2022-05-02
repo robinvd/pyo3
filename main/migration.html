@@ -147,6 +147,27 @@
 <p>This guide can help you upgrade code through breaking changes from one PyO3 version to the next.
 For a detailed list of all changes, see the <a href="changelog.html">CHANGELOG</a>.</p>
 <h2 id="from-016-to-017"><a class="header" href="#from-016-to-017">from 0.16.* to 0.17</a></h2>
+<h3 id="added-impl-intopypypystring-for-str"><a class="header" href="#added-impl-intopypypystring-for-str">Added <code>impl IntoPy&lt;Py&lt;PyString&gt;&gt; for &amp;str</code></a></h3>
+<p>This may cause inference errors.</p>
+<p>Before:</p>
+<pre><pre class="playground"><code class="language-rust compile_fail"><span class="boring">use pyo3::prelude::*;
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span>Python::with_gil(|py| {
+    // Cannot infer either `Py&lt;PyAny&gt;` or `Py&lt;PyString&gt;`
+    let _test = &quot;test&quot;.into_py(py);
+});
+<span class="boring">}
+</span></code></pre></pre>
+<p>After, some type annotations may be necessary:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">use pyo3::prelude::*;
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span>Python::with_gil(|py| {
+    let _test: Py&lt;PyAny&gt; = &quot;test&quot;.into_py(py);
+});
+<span class="boring">}
+</span></code></pre></pre>
 <h3 id="the-pyproto-feature-is-now-disabled-by-default"><a class="header" href="#the-pyproto-feature-is-now-disabled-by-default">The <code>pyproto</code> feature is now disabled by default</a></h3>
 <p>In preparation for removing the deprecated <code>#[pyproto]</code> attribute macro in a future PyO3 version, it is now gated behind an opt-in feature flag. This also gives a slight saving to compile times for code which does not use the deprecated macro.</p>
 <h3 id="pytypeobject-trait-has-been-deprecated"><a class="header" href="#pytypeobject-trait-has-been-deprecated"><code>PyTypeObject</code> trait has been deprecated</a></h3>
