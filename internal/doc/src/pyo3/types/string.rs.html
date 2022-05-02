@@ -832,7 +832,7 @@
         <span class="kw">let</span> <span class="ident">utf8_slice</span> <span class="op">=</span> {
             <span class="macro">cfg_if::cfg_if!</span> {
                 <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">Py_3_10</span>, <span class="ident">not</span>(<span class="ident">Py_LIMITED_API</span>)))]</span> {
-                    <span class="comment">// PyUnicode_AsUTF8AndSize only available on limited API before 3.10.</span>
+                    <span class="comment">// PyUnicode_AsUTF8AndSize only available on limited API starting with 3.10.</span>
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">size</span>: <span class="ident">ffi::Py_ssize_t</span> <span class="op">=</span> <span class="number">0</span>;
                     <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">ffi::PyUnicode_AsUTF8AndSize</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">size</span>) };
                     <span class="kw">if</span> <span class="ident">data</span>.<span class="ident">is_null</span>() {
