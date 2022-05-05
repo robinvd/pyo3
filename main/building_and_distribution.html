@@ -178,7 +178,8 @@ Caused by:
   lib_dir=/usr/lib
   executable=/usr/bin/python
   pointer_width=64
-  build_flags=WITH_THREAD
+  build_flags=
+  suppress_build_script_link_lines=false
 </code></pre>
 <h3 id="advanced-config-files"><a class="header" href="#advanced-config-files">Advanced: config files</a></h3>
 <p>If you save the above output config from <code>PYO3_PRINT_CONFIG</code> to a file, it is possible to manually override the contents and feed it back into PyO3 using the <code>PYO3_CONFIG_FILE</code> env var.</p>
