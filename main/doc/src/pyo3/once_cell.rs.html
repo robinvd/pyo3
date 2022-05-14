@@ -191,6 +191,9 @@
 <span id="186">186</span>
 <span id="187">187</span>
 <span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
 </pre><pre class="rust"><code><span class="doccomment">//! A write-once cell mediated by the Python GIL.</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Python</span>;
 <span class="kw">use</span> <span class="ident">std::cell::UnsafeCell</span>;
@@ -333,6 +336,9 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// #</span>
 <span class="doccomment">/// # Python::with_gil(|py| {</span>
+<span class="doccomment">/// #     let fun_slow = wrap_pyfunction!(create_dict, py).unwrap();</span>
+<span class="doccomment">/// #     let dict = fun_slow.call0().unwrap();</span>
+<span class="doccomment">/// #     assert!(dict.contains(&quot;foo&quot;).unwrap());</span>
 <span class="doccomment">/// #     let fun = wrap_pyfunction!(create_dict_faster, py).unwrap();</span>
 <span class="doccomment">/// #     let dict = fun.call0().unwrap();</span>
 <span class="doccomment">/// #     assert!(dict.contains(&quot;foo&quot;).unwrap());</span>
