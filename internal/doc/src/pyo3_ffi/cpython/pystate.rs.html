@@ -96,6 +96,7 @@
 <span id="91">91</span>
 <span id="92">92</span>
 <span id="93">93</span>
+<span id="94">94</span>
 </pre><pre class="rust"><code><span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::PyThreadState</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">PyFrameObject</span>, <span class="ident">PyInterpreterState</span>, <span class="ident">PyObject</span>};
@@ -151,6 +152,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">PyThreadState_Next</span>(<span class="ident">tstate</span>: <span class="kw-2">*mut</span> <span class="ident">PyThreadState</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">PyThreadState</span>;
 
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">py_sys_config</span> <span class="op">=</span> <span class="string">&quot;WITH_THREAD&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">PyPy</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;PyPyThreadState_DeleteCurrent&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">PyThreadState_DeleteCurrent</span>();
 }

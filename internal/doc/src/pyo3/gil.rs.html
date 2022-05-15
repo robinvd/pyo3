@@ -877,8 +877,6 @@
 <span id="872">872</span>
 <span id="873">873</span>
 <span id="874">874</span>
-<span id="875">875</span>
-<span id="876">876</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors</span>
 
 <span class="doccomment">//! Interaction with Python&#39;s global interpreter lock</span>
@@ -978,16 +976,14 @@
 <span class="doccomment">/// - The return value of the closure must not contain any Python value, _including_ `PyResult`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
+<span class="doccomment">/// use pyo3::prelude::*;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # fn main() -&gt; PyResult&lt;()&gt;{</span>
 <span class="doccomment">/// unsafe {</span>
-<span class="doccomment">///     pyo3::with_embedded_python_interpreter(|py| {</span>
-<span class="doccomment">///        if let Err(e) = py.run(&quot;print(&#39;Hello World&#39;)&quot;, None, None){</span>
-<span class="doccomment">///            // We must make sure to not return a `PyErr`!</span>
-<span class="doccomment">///            e.print(py);</span>
-<span class="doccomment">///        }</span>
-<span class="doccomment">///     });</span>
+<span class="doccomment">///     pyo3::with_embedded_python_interpreter(|py| py.run(&quot;print(&#39;Hello World&#39;)&quot;, None, None))</span>
 <span class="doccomment">/// }</span>
+<span class="doccomment">/// # }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">with_embedded_python_interpreter</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">R</span>
@@ -1057,7 +1053,7 @@
     <span class="doccomment">/// `GILGuard` will also contain a `GILPool`.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">acquire</span>() -&gt; <span class="ident">GILGuard</span> {
         <span class="comment">// Maybe auto-initialize the GIL:</span>
-        <span class="comment">//  - If auto-initialize feature set and supported, try to initialize the interpreter.</span>
+        <span class="comment">//  - If auto-initialize feature set and supported, try to initalize the interpreter.</span>
         <span class="comment">//  - If the auto-initialize feature is set but unsupported, emit hard errors only when the</span>
         <span class="comment">//    extension-module feature is not activated - extension modules don&#39;t care about</span>
         <span class="comment">//    auto-initialize so this avoids breaking existing builds.</span>
@@ -1082,7 +1078,7 @@
                     <span class="macro">assert_ne!</span>(
                         <span class="ident">ffi::Py_IsInitialized</span>(),
                         <span class="number">0</span>,
-                        <span class="string">&quot;The Python interpreter is not initialized and the `auto-initialize` \
+                        <span class="string">&quot;The Python interpreter is not initalized and the `auto-initialize` \
                          feature is not enabled.\n\n\
                          Consider calling `pyo3::prepare_freethreaded_python()` before attempting \
                          to use Python APIs.&quot;</span>

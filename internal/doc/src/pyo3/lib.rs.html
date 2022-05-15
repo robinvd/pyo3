@@ -480,17 +480,17 @@
         <span class="ident">rustdoc::bare_urls</span>
     )
 )]</span>
-<span class="attribute">#![<span class="ident">warn</span>(<span class="ident">rust_2018_idioms</span>, <span class="ident">unused_lifetimes</span>)]</span>
+<span class="attribute">#![<span class="ident">warn</span>(<span class="ident">elided_lifetimes_in_paths</span>, <span class="ident">unused_lifetimes</span>)]</span>
 <span class="comment">// Deny some lints in doctests.</span>
 <span class="comment">// Use `#[allow(...)]` locally to override.</span>
 <span class="attribute">#![<span class="ident">doc</span>(<span class="ident">test</span>(<span class="ident">attr</span>(
     <span class="ident">deny</span>(
-        <span class="ident">rust_2018_idioms</span>,
+        <span class="ident">elided_lifetimes_in_paths</span>,
         <span class="ident">unused_lifetimes</span>,
         <span class="ident">rust_2021_prelude_collisions</span>,
         <span class="ident">warnings</span>
     ),
-    <span class="ident">allow</span>(<span class="ident">unused_variables</span>, <span class="ident">unused_assignments</span>, <span class="ident">unused_extern_crates</span>)
+    <span class="ident">allow</span>(<span class="ident">unused_variables</span>, <span class="ident">unused_assignments</span>)
 )))]</span>
 
 <span class="doccomment">//! Rust bindings to the Python interpreter.</span>
@@ -766,11 +766,9 @@
 <span class="doccomment">//! [Features chapter of the guide]: https://pyo3.rs/latest/features.html#features-reference &quot;Features Reference - PyO3 user guide&quot;</span>
 <span class="doccomment">//! [`Ungil`]: crate::marker::Ungil</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::class</span>::<span class="kw-2">*</span>;
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::conversion::ToBorrowedObject</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::conversion</span>::{
     <span class="ident">AsPyPointer</span>, <span class="ident">FromPyObject</span>, <span class="ident">FromPyPointer</span>, <span class="ident">IntoPy</span>, <span class="ident">IntoPyPointer</span>, <span class="ident">PyTryFrom</span>, <span class="ident">PyTryInto</span>,
-    <span class="ident">ToPyObject</span>,
+    <span class="ident">ToBorrowedObject</span>, <span class="ident">ToPyObject</span>,
 };
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::err</span>::{<span class="ident">PyDowncastError</span>, <span class="ident">PyErr</span>, <span class="ident">PyErrArguments</span>, <span class="ident">PyResult</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
@@ -877,7 +875,9 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;macros&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pyproto&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pyo3_macros::pyproto</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;macros&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pyo3_macros</span>::{<span class="ident">pyclass</span>, <span class="ident">pyfunction</span>, <span class="ident">pymethods</span>, <span class="ident">pymodule</span>, <span class="ident">FromPyObject</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">pyo3_macros</span>::{
+    <span class="ident">pyclass</span>, <span class="ident">pyfunction</span>, <span class="ident">pymethods</span>, <span class="ident">pymodule</span>, <span class="ident">wrap_pyfunction</span>, <span class="ident">wrap_pymodule</span>, <span class="ident">FromPyObject</span>,
+};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;macros&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
