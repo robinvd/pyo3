@@ -76,7 +76,7 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Py_RunMain</span>() -&gt; <span class="ident">c_int</span>;
 
-    <span class="comment">// skipped Py_ExitStatusException</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Py_ExitStatusException</span>(<span class="ident">status</span>: <span class="ident">PyStatus</span>) -&gt; <span class="op">!</span>;
 
     <span class="comment">// skipped _Py_RestoreSignals</span>
 
