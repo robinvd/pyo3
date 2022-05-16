@@ -3,7 +3,9 @@
         </a><h2 class="location"></h2>
     </nav>
     <nav class="sidebar"><a class="sidebar-logo" href="../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../pyo3/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../pyo3/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -877,6 +879,8 @@
 <span id="872">872</span>
 <span id="873">873</span>
 <span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors</span>
 
 <span class="doccomment">//! Interaction with Python&#39;s global interpreter lock</span>
@@ -976,14 +980,16 @@
 <span class="doccomment">/// - The return value of the closure must not contain any Python value, _including_ `PyResult`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>
-<span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// use pyo3::prelude::*;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// # fn main() -&gt; PyResult&lt;()&gt;{</span>
+<span class="doccomment">/// ```rust</span>
 <span class="doccomment">/// unsafe {</span>
-<span class="doccomment">///     pyo3::with_embedded_python_interpreter(|py| py.run(&quot;print(&#39;Hello World&#39;)&quot;, None, None))</span>
+<span class="doccomment">///     pyo3::with_embedded_python_interpreter(|py| {</span>
+<span class="doccomment">///        if let Err(e) = py.run(&quot;print(&#39;Hello World&#39;)&quot;, None, None){</span>
+<span class="doccomment">///            // We must make sure to not return a `PyErr`!</span>
+<span class="doccomment">///            e.print(py);</span>
+<span class="doccomment">///        }</span>
+<span class="doccomment">///     });</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// # }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">with_embedded_python_interpreter</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">R</span>
@@ -1053,7 +1059,7 @@
     <span class="doccomment">/// `GILGuard` will also contain a `GILPool`.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">acquire</span>() -&gt; <span class="ident">GILGuard</span> {
         <span class="comment">// Maybe auto-initialize the GIL:</span>
-        <span class="comment">//  - If auto-initialize feature set and supported, try to initalize the interpreter.</span>
+        <span class="comment">//  - If auto-initialize feature set and supported, try to initialize the interpreter.</span>
         <span class="comment">//  - If the auto-initialize feature is set but unsupported, emit hard errors only when the</span>
         <span class="comment">//    extension-module feature is not activated - extension modules don&#39;t care about</span>
         <span class="comment">//    auto-initialize so this avoids breaking existing builds.</span>
@@ -1078,7 +1084,7 @@
                     <span class="macro">assert_ne!</span>(
                         <span class="ident">ffi::Py_IsInitialized</span>(),
                         <span class="number">0</span>,
-                        <span class="string">&quot;The Python interpreter is not initalized and the `auto-initialize` \
+                        <span class="string">&quot;The Python interpreter is not initialized and the `auto-initialize` \
                          feature is not enabled.\n\n\
                          Consider calling `pyo3::prepare_freethreaded_python()` before attempting \
                          to use Python APIs.&quot;</span>
@@ -1752,5 +1758,5 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (70b3681bf 2022-05-14)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (42e1761c7 2022-05-15)" ></div>
 </body></html>

@@ -3,7 +3,9 @@
         </a><h2 class="location"></h2>
     </nav>
     <nav class="sidebar"><a class="sidebar-logo" href="../../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../pyo3/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../pyo3/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -537,15 +539,14 @@
 <span id="532">532</span>
 <span id="533">533</span>
 <span id="534">534</span>
+<span id="535">535</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors</span>
 <span class="comment">//</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::err</span>::{<span class="self">self</span>, <span class="ident">PyErr</span>, <span class="ident">PyResult</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">Py_LIMITED_API</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types::PyIterator</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">ffi</span>, <span class="ident">AsPyPointer</span>, <span class="ident">FromPyObject</span>, <span class="ident">IntoPy</span>, <span class="ident">PyAny</span>, <span class="ident">PyObject</span>, <span class="ident">Python</span>, <span class="ident">ToBorrowedObject</span>, <span class="ident">ToPyObject</span>,
-};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ffi</span>, <span class="ident">AsPyPointer</span>, <span class="ident">FromPyObject</span>, <span class="ident">IntoPy</span>, <span class="ident">PyAny</span>, <span class="ident">PyObject</span>, <span class="ident">Python</span>, <span class="ident">ToPyObject</span>};
 <span class="kw">use</span> <span class="ident">std::cmp</span>;
 <span class="kw">use</span> <span class="ident">std::collections</span>::{<span class="ident">BTreeSet</span>, <span class="ident">HashSet</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections</span>, <span class="ident">hash</span>, <span class="ident">ptr</span>};
@@ -608,13 +609,13 @@
     <span class="kw">where</span>
         <span class="ident">K</span>: <span class="ident">ToPyObject</span>,
     {
-        <span class="ident">key</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">key</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="kw">match</span> <span class="ident">ffi::PySet_Contains</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>) {
+        <span class="kw">unsafe</span> {
+            <span class="kw">match</span> <span class="ident">ffi::PySet_Contains</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>.<span class="ident">to_object</span>(<span class="self">self</span>.<span class="ident">py</span>()).<span class="ident">as_ptr</span>()) {
                 <span class="number">1</span> =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
                 <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
                 <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">PyErr::fetch</span>(<span class="self">self</span>.<span class="ident">py</span>())),
             }
-        })
+        }
     }
 
     <span class="doccomment">/// Removes the element from the set if it is present.</span>
@@ -622,9 +623,9 @@
     <span class="kw">where</span>
         <span class="ident">K</span>: <span class="ident">ToPyObject</span>,
     {
-        <span class="ident">key</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">key</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">ffi::PySet_Discard</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>);
-        })
+        <span class="kw">unsafe</span> {
+            <span class="ident">ffi::PySet_Discard</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>.<span class="ident">to_object</span>(<span class="self">self</span>.<span class="ident">py</span>()).<span class="ident">as_ptr</span>());
+        }
     }
 
     <span class="doccomment">/// Adds an element to the set.</span>
@@ -632,9 +633,12 @@
     <span class="kw">where</span>
         <span class="ident">K</span>: <span class="ident">ToPyObject</span>,
     {
-        <span class="ident">key</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="kw">move</span> <span class="op">|</span><span class="ident">key</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">err::error_on_minusone</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="ident">ffi::PySet_Add</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>))
-        })
+        <span class="kw">unsafe</span> {
+            <span class="ident">err::error_on_minusone</span>(
+                <span class="self">self</span>.<span class="ident">py</span>(),
+                <span class="ident">ffi::PySet_Add</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>.<span class="ident">to_object</span>(<span class="self">self</span>.<span class="ident">py</span>()).<span class="ident">as_ptr</span>()),
+            )
+        }
     }
 
     <span class="doccomment">/// Removes and returns an arbitrary element from the set.</span>
@@ -842,15 +846,15 @@
     <span class="doccomment">/// This is equivalent to the Python expression `key in self`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>) -&gt; <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">K</span>: <span class="ident">ToBorrowedObject</span>,
+        <span class="ident">K</span>: <span class="ident">ToPyObject</span>,
     {
-        <span class="ident">key</span>.<span class="ident">with_borrowed_ptr</span>(<span class="self">self</span>.<span class="ident">py</span>(), <span class="op">|</span><span class="ident">key</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="kw">match</span> <span class="ident">ffi::PySet_Contains</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>) {
+        <span class="kw">unsafe</span> {
+            <span class="kw">match</span> <span class="ident">ffi::PySet_Contains</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">key</span>.<span class="ident">to_object</span>(<span class="self">self</span>.<span class="ident">py</span>()).<span class="ident">as_ptr</span>()) {
                 <span class="number">1</span> =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>),
                 <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>),
                 <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">PyErr::fetch</span>(<span class="self">self</span>.<span class="ident">py</span>())),
             }
-        })
+        }
     }
 
     <span class="doccomment">/// Returns an iterator of values in this frozen set.</span>
@@ -1072,5 +1076,5 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (70b3681bf 2022-05-14)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (42e1761c7 2022-05-15)" ></div>
 </body></html>

@@ -3,7 +3,9 @@
         </a><h2 class="location"></h2>
     </nav>
     <nav class="sidebar"><a class="sidebar-logo" href="../../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../pyo3/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../pyo3/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -908,18 +910,42 @@
 <span id="903">903</span>
 <span id="904">904</span>
 <span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::panic::PanicException</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::type_object::PyTypeObject</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::type_object::PyTypeInfo</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types</span>::{<span class="ident">PyTraceback</span>, <span class="ident">PyType</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">exceptions</span>::{<span class="self">self</span>, <span class="ident">PyBaseException</span>},
     <span class="ident">ffi</span>,
 };
-<span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">AsPyPointer</span>, <span class="ident">IntoPy</span>, <span class="ident">IntoPyPointer</span>, <span class="ident">Py</span>, <span class="ident">PyAny</span>, <span class="ident">PyObject</span>, <span class="ident">Python</span>, <span class="ident">ToBorrowedObject</span>, <span class="ident">ToPyObject</span>,
-};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">AsPyPointer</span>, <span class="ident">IntoPy</span>, <span class="ident">IntoPyPointer</span>, <span class="ident">Py</span>, <span class="ident">PyAny</span>, <span class="ident">PyObject</span>, <span class="ident">Python</span>, <span class="ident">ToPyObject</span>};
 <span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
 <span class="kw">use</span> <span class="ident">std::cell::UnsafeCell</span>;
 <span class="kw">use</span> <span class="ident">std::ffi::CString</span>;
@@ -989,20 +1015,45 @@
     <span class="doccomment">/// If an error occurs during normalization (for example if `T` is not a Python type which</span>
     <span class="doccomment">/// extends from `BaseException`), then a different error may be produced during normalization.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # Example</span>
+    <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```ignore</span>
-    <span class="doccomment">/// return Err(PyErr::new::&lt;exceptions::PyTypeError, _&gt;(&quot;Error message&quot;));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use pyo3::prelude::*;</span>
+    <span class="doccomment">/// use pyo3::exceptions::PyTypeError;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// #[pyfunction]</span>
+    <span class="doccomment">/// fn always_throws() -&gt; PyResult&lt;()&gt; {</span>
+    <span class="doccomment">///     Err(PyErr::new::&lt;PyTypeError, _&gt;(&quot;Error message&quot;))</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// #</span>
+    <span class="doccomment">/// # Python::with_gil(|py| {</span>
+    <span class="doccomment">/// #     let fun = pyo3::wrap_pyfunction!(always_throws, py).unwrap();</span>
+    <span class="doccomment">/// #     let err = fun.call0().expect_err(&quot;called a function that should always return an error but the return value was Ok&quot;);</span>
+    <span class="doccomment">/// #     assert!(err.is_instance_of::&lt;PyTypeError&gt;(py))</span>
+    <span class="doccomment">/// # });</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// In most cases, you can use a concrete exception&#39;s constructor instead, which is equivalent:</span>
-    <span class="doccomment">/// ```ignore</span>
-    <span class="doccomment">/// return Err(exceptions::PyTypeError::new_err(&quot;Error message&quot;));</span>
+    <span class="doccomment">/// In most cases, you can use a concrete exception&#39;s constructor instead:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use pyo3::prelude::*;</span>
+    <span class="doccomment">/// use pyo3::exceptions::PyTypeError;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// #[pyfunction]</span>
+    <span class="doccomment">/// fn always_throws() -&gt; PyResult&lt;()&gt; {</span>
+    <span class="doccomment">///     Err(PyTypeError::new_err(&quot;Error message&quot;))</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// #</span>
+    <span class="doccomment">/// # Python::with_gil(|py| {</span>
+    <span class="doccomment">/// #     let fun = pyo3::wrap_pyfunction!(always_throws, py).unwrap();</span>
+    <span class="doccomment">/// #     let err = fun.call0().expect_err(&quot;called a function that should always return an error but the return value was Ok&quot;);</span>
+    <span class="doccomment">/// #     assert!(err.is_instance_of::&lt;PyTypeError&gt;(py))</span>
+    <span class="doccomment">/// # });</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>(<span class="ident">args</span>: <span class="ident">A</span>) -&gt; <span class="ident">PyErr</span>
     <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">PyTypeObject</span>,
+        <span class="ident">T</span>: <span class="ident">PyTypeInfo</span>,
         <span class="ident">A</span>: <span class="ident">PyErrArguments</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
         <span class="ident">PyErr::from_state</span>(<span class="ident">PyErrState::LazyTypeAndValue</span> {
@@ -1047,7 +1098,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// use pyo3::{exceptions::PyTypeError, types::PyType, IntoPy, PyErr, Python};</span>
+    <span class="doccomment">/// use pyo3::prelude::*;</span>
+    <span class="doccomment">/// use pyo3::exceptions::PyTypeError;</span>
+    <span class="doccomment">/// use pyo3::types::{PyType, PyString};</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// Python::with_gil(|py| {</span>
     <span class="doccomment">///     // Case #1: Exception object</span>
     <span class="doccomment">///     let err = PyErr::from_value(PyTypeError::new_err(&quot;some type error&quot;).value(py));</span>
@@ -1058,7 +1112,7 @@
     <span class="doccomment">///     assert_eq!(err.to_string(), &quot;TypeError: &quot;);</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     // Case #3: Invalid exception value</span>
-    <span class="doccomment">///     let err = PyErr::from_value(&quot;foo&quot;.into_py(py).as_ref(py));</span>
+    <span class="doccomment">///     let err = PyErr::from_value(PyString::new(py, &quot;foo&quot;).into());</span>
     <span class="doccomment">///     assert_eq!(</span>
     <span class="doccomment">///         err.to_string(),</span>
     <span class="doccomment">///         &quot;TypeError: exceptions must derive from BaseException&quot;</span>
@@ -1321,11 +1375,11 @@
     <span class="doccomment">/// If `exc` is a tuple, all exceptions in the tuple (and recursively in subtuples) are searched for a match.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matches</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">exc</span>: <span class="ident">T</span>) -&gt; <span class="ident">bool</span>
     <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">ToBorrowedObject</span>,
+        <span class="ident">T</span>: <span class="ident">ToPyObject</span>,
     {
-        <span class="ident">exc</span>.<span class="ident">with_borrowed_ptr</span>(<span class="ident">py</span>, <span class="op">|</span><span class="ident">exc</span><span class="op">|</span> <span class="kw">unsafe</span> {
-            <span class="ident">ffi::PyErr_GivenExceptionMatches</span>(<span class="self">self</span>.<span class="ident">type_ptr</span>(<span class="ident">py</span>), <span class="ident">exc</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
-        })
+        <span class="kw">unsafe</span> {
+            <span class="ident">ffi::PyErr_GivenExceptionMatches</span>(<span class="self">self</span>.<span class="ident">type_ptr</span>(<span class="ident">py</span>), <span class="ident">exc</span>.<span class="ident">to_object</span>(<span class="ident">py</span>).<span class="ident">as_ptr</span>()) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
+        }
     }
 
     <span class="doccomment">/// Returns true if the current exception is instance of `T`.</span>
@@ -1338,7 +1392,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_instance_of</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span>
     <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">PyTypeObject</span>,
+        <span class="ident">T</span>: <span class="ident">PyTypeInfo</span>,
     {
         <span class="self">self</span>.<span class="ident">is_instance</span>(<span class="ident">py</span>, <span class="ident">T::type_object</span>(<span class="ident">py</span>))
     }
@@ -1814,5 +1868,5 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (70b3681bf 2022-05-14)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (42e1761c7 2022-05-15)" ></div>
 </body></html>

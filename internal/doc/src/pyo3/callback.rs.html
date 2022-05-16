@@ -3,7 +3,9 @@
         </a><h2 class="location"></h2>
     </nav>
     <nav class="sidebar"><a class="sidebar-logo" href="../../pyo3/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../pyo3/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../pyo3/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -286,6 +288,9 @@
 <span id="281">281</span>
 <span id="282">282</span>
 <span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors</span>
 
 <span class="doccomment">//! Utilities for a Python callable object that invokes a Rust function.</span>
@@ -335,7 +340,10 @@
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">convert</span>(<span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">map_err</span>(<span class="ident">Into::into</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">convert</span>(<span class="ident">py</span>))
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">v</span>) =&gt; <span class="ident">v</span>.<span class="ident">convert</span>(<span class="ident">py</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">e</span>.<span class="ident">into</span>()),
+        }
     }
 }
 
@@ -495,7 +503,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// For example this pyfunction:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// ```ignore</span>
+<span class="doccomment">/// ```no_compile</span>
 <span class="doccomment">/// fn foo(&amp;self) -&gt; &amp;Bar {</span>
 <span class="doccomment">///     &amp;self.bar</span>
 <span class="doccomment">/// }</span>
@@ -503,7 +511,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// It is wrapped in proc macros with handle_panic like so:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// ```ignore</span>
+<span class="doccomment">/// ```no_compile</span>
 <span class="doccomment">/// pyo3::callback::handle_panic(|_py| {</span>
 <span class="doccomment">///     let _slf = #slf;</span>
 <span class="doccomment">///     pyo3::callback::convert(_py, #foo)</span>
@@ -512,7 +520,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// If callback_body was used instead:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// ```ignore</span>
+<span class="doccomment">/// ```no_compile</span>
 <span class="doccomment">/// pyo3::callback_body!(py, {</span>
 <span class="doccomment">///     let _slf = #slf;</span>
 <span class="doccomment">///     #foo</span>
@@ -570,5 +578,5 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0-nightly (70b3681bf 2022-05-14)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (42e1761c7 2022-05-15)" ></div>
 </body></html>
