@@ -45,7 +45,7 @@ won’t need to use <a href="struct.PyCell.html" title="PyCell"><code>PyCell</co
 using <a href="struct.PyCell.html" title="PyCell"><code>PyCell</code></a> under the hood:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// This function is exported to Python.</span>
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__wrap</span>(
+<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__pymethod_increment__</span>(
     <span class="ident">_slf</span>: <span class="kw-2">*mut</span> <span class="ident">::pyo3::ffi::PyObject</span>,
     <span class="ident">_args</span>: <span class="kw-2">*mut</span> <span class="ident">::pyo3::ffi::PyObject</span>,
 ) -&gt; <span class="kw-2">*mut</span> <span class="ident">::pyo3::ffi::PyObject</span> {
