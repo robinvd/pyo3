@@ -7455,6 +7455,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Allow <code>#[classattr]</code> methods to be fallible. <a href="https://github.com/PyO3/pyo3/pull/2385">#2385</a></li>
 <li>Prevent multiple <code>#[pymethods]</code> with the same name for a single <code>#[pyclass]</code>. <a href="https://github.com/PyO3/pyo3/pull/2399">#2399</a></li>
 <li>Fixup <code>lib_name</code> when using <code>PYO3_CONFIG_FILE</code>. <a href="https://github.com/PyO3/pyo3/pull/2404">#2404</a></li>
+<li>Iterators over <code>PySet</code> and <code>PyDict</code> will now panic if the underlying collection is mutated during the iteration. <a href="https://github.com/PyO3/pyo3/pull/2380">#2380</a></li>
 </ul>
 <h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
 <ul>
