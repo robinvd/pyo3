@@ -662,7 +662,7 @@
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
 <span class="doccomment">/// Structure representing a `datetime.time` without a `tzinfo` member.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PyDateTime_BaseTime</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">_PyDateTime_BaseTime</span> {
     <span class="kw">pub</span> <span class="ident">ob_base</span>: <span class="ident">PyObject</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
     <span class="kw">pub</span> <span class="ident">hashcode</span>: <span class="ident">Py_hash_t</span>,
@@ -680,7 +680,7 @@
 <span class="doccomment">/// # Safety</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Care should be taken when reading the `tzinfo` field of this type. If the time does not have a</span>
-<span class="doccomment">/// tzinfo then the Python interpreter is free to allocate it as a [PyDateTime_BaseTime].</span>
+<span class="doccomment">/// tzinfo then the Python interpreter is free to allocate it as a [_PyDateTime_BaseTime].</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PyDateTime_Time</span> {
     <span class="kw">pub</span> <span class="ident">ob_base</span>: <span class="ident">PyObject</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
@@ -707,7 +707,7 @@
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
 <span class="doccomment">/// Structure representing a `datetime.datetime` without a `tzinfo` member.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PyDateTime_BaseDateTime</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">_PyDateTime_BaseDateTime</span> {
     <span class="kw">pub</span> <span class="ident">ob_base</span>: <span class="ident">PyObject</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
     <span class="kw">pub</span> <span class="ident">hashcode</span>: <span class="ident">Py_hash_t</span>,
@@ -725,7 +725,7 @@
 <span class="doccomment">/// # Safety</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Care should be taken when reading the `tzinfo` field of this type. If the datetime does not have a</span>
-<span class="doccomment">/// tzinfo then the Python interpreter is free to allocate it as a [PyDateTime_BaseDateTime].</span>
+<span class="doccomment">/// tzinfo then the Python interpreter is free to allocate it as a [_PyDateTime_BaseDateTime].</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PyDateTime_DateTime</span> {
     <span class="kw">pub</span> <span class="ident">ob_base</span>: <span class="ident">PyObject</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
