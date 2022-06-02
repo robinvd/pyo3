@@ -175,6 +175,8 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Fixed incorrectly disabled FFI definition <code>PyThreadState_DeleteCurrent</code>. <a href="https://github.com/PyO3/pyo3/pull/2357">#2357</a></li>
 <li>Correct FFI definition <code>PyEval_EvalCodeEx</code> to take <code>*const *mut PyObject</code> array arguments instead of <code>*mut *mut PyObject</code> (this was changed in CPython 3.6). <a href="https://github.com/PyO3/pyo3/pull/2368">#2368</a></li>
 <li>Fix &quot;raw-ident&quot; structs (e.g. <code>#[pyclass] struct r#RawName</code>) incorrectly having <code>r#</code> at the start of the class name created in Python. <a href="https://github.com/PyO3/pyo3/pull/2395">#2395</a></li>
+<li>Fix case where <code>ValueError</code> without message could be raised by the <code>#[derive(FromPyObject)]</code> generated implementation for a tuple struct. <a href="https://github.com/PyO3/pyo3/pull/2414">#2414</a></li>
+<li>Fix compile failure when using <code>#[pyo3(from_py_with = &quot;pouf&quot;)]</code> in on a field in a <code>#[derive(FromPyObject)]</code> struct. <a href="https://github.com/PyO3/pyo3/pull/2414">#2414</a></li>
 </ul>
 <h2 id="a-hrefhttpsgithubcompyo3pyo3comparev0164v01650165a---2022-05-15"><a class="header" href="#a-hrefhttpsgithubcompyo3pyo3comparev0164v01650165a---2022-05-15"><a href="https://github.com/pyo3/pyo3/compare/v0.16.4...v0.16.5">0.16.5</a> - 2022-05-15</a></h2>
 <h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
