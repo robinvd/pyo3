@@ -157,6 +157,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Add macro <code>append_to_inittab</code>. <a href="https://github.com/PyO3/pyo3/pull/2377">#2377</a></li>
 <li>Add FFI definition <code>PyFrame_GetCode</code>. <a href="https://github.com/PyO3/pyo3/pull/2406">#2406</a></li>
 <li>Added <code>PyCode</code> and <code>PyFrame</code> high level objects. <a href="https://github.com/PyO3/pyo3/pull/2408">#2408</a></li>
+<li>Add FFI definitions <code>Py_fstring_input</code>, <code>sendfunc</code>, and <code>_PyErr_StackItem</code>. <a href="https://github.com/PyO3/pyo3/pull/2423">#2423</a></li>
 </ul>
 <h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
 <ul>
@@ -181,6 +182,11 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Fix compile failure when using <code>#[pyo3(from_py_with = &quot;pouf&quot;)]</code> in on a field in a <code>#[derive(FromPyObject)]</code> struct. <a href="https://github.com/PyO3/pyo3/pull/2414">#2414</a></li>
 <li>Fix FFI definitions <code>_PyDateTime_BaseTime</code> lacking leading underscores in their names. <a href="https://github.com/PyO3/pyo3/pull/2421">#2421</a></li>
 <li>Remove FFI definition <code>PyArena</code> on Python 3.10 and up. <a href="https://github.com/PyO3/pyo3/pull/2421">#2421</a></li>
+<li>Fix FFI definition <code>PyCompilerFlags</code> missing member <code>cf_feature_version</code> on Python 3.8 and up. <a href="https://github.com/PyO3/pyo3/pull/2423">#2423</a></li>
+<li>Fix FFI definition <code>PyAsyncMethods</code> missing member <code>am_send</code> on Python 3.10 and up. <a href="https://github.com/PyO3/pyo3/pull/2423">#2423</a></li>
+<li>Fix FFI definition <code>PyGenObject</code> having multiple incorrect members on various Python versions. <a href="https://github.com/PyO3/pyo3/pull/2423">#2423</a></li>
+<li>Fix FFI definition <code>PySyntaxErrorObject</code> missing members <code>end_lineno</code> and <code>end_offset</code> on Python 3.10 and up. <a href="https://github.com/PyO3/pyo3/pull/2423">#2423</a></li>
+<li>Fix FFI definition <code>PyHeapTypeObject</code> missing member <code>ht_module</code> on Python 3.9 and up. <a href="https://github.com/PyO3/pyo3/pull/2423">#2423</a></li>
 </ul>
 <h2 id="a-hrefhttpsgithubcompyo3pyo3comparev0164v01650165a---2022-05-15"><a class="header" href="#a-hrefhttpsgithubcompyo3pyo3comparev0164v01650165a---2022-05-15"><a href="https://github.com/pyo3/pyo3/compare/v0.16.4...v0.16.5">0.16.5</a> - 2022-05-15</a></h2>
 <h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
