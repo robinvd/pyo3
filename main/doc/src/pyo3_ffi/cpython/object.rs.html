@@ -394,6 +394,8 @@
 <span id="387">387</span>
 <span id="388">388</span>
 <span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::object</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">PyObject</span>, <span class="ident">Py_ssize_t</span>};
 <span class="kw">use</span> <span class="ident">std::mem</span>;
@@ -672,6 +674,8 @@
     <span class="kw">pub</span> <span class="ident">tp_finalize</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">object::destructor</span><span class="op">&gt;</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">Py_3_8</span>)]</span>
     <span class="kw">pub</span> <span class="ident">tp_vectorcall</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::vectorcallfunc</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">Py_3_8</span>, <span class="ident">not</span>(<span class="ident">Py_3_9</span>)))]</span>
+    <span class="kw">pub</span> <span class="ident">tp_print</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">printfunc</span><span class="op">&gt;</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">PyPy</span>)]</span>
     <span class="kw">pub</span> <span class="ident">tp_pypy_flags</span>: <span class="ident">std::os::raw::c_long</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">py_sys_config</span> <span class="op">=</span> <span class="string">&quot;COUNT_ALLOCS&quot;</span>)]</span>
@@ -784,5 +788,5 @@
 <span class="comment">// skipped Py_TRASHCAN_SAFE_BEGIN</span>
 <span class="comment">// skipped Py_TRASHCAN_SAFE_END</span>
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3_ffi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (e71440575 2022-06-02)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3_ffi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (a6b8c6954 2022-06-03)" ></div>
 </body></html>

@@ -90,11 +90,15 @@
 <span id="83">83</span>
 <span id="84">84</span>
 <span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::object</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::pyport::Py_ssize_t</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">PyFrameObject</span>, <span class="ident">_PyErr_StackItem</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::PyFrameObject</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Py_ssize_t</span>, <span class="ident">_PyErr_StackItem</span>};
 <span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PyGenObject</span> {
@@ -136,7 +140,7 @@
     <span class="comment">// skipped _PyGen_FetchStopIterationValue</span>
     <span class="comment">// skipped _PyGen_yf</span>
     <span class="comment">// skipped _PyGen_Finalize</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">Py_3_9</span>))]</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">Py_3_9</span>, <span class="ident">PyPy</span>)))]</span>
     <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;This function was never documented in the Python API.&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">PyGen_NeedsFinalizing</span>(<span class="ident">op</span>: <span class="kw-2">*mut</span> <span class="ident">PyGenObject</span>) -&gt; <span class="ident">c_int</span>;
 }
@@ -176,5 +180,5 @@
 
 <span class="comment">// skipped _PyAsyncGenValueWrapperNew</span>
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3_ffi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (e71440575 2022-06-02)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3_ffi" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (a6b8c6954 2022-06-03)" ></div>
 </body></html>
