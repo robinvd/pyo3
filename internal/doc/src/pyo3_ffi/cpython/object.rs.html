@@ -396,6 +396,9 @@
 <span id="389">389</span>
 <span id="390">390</span>
 <span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::object</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">PyObject</span>, <span class="ident">Py_ssize_t</span>};
 <span class="kw">use</span> <span class="ident">std::mem</span>;
@@ -762,8 +765,11 @@
 <span class="comment">// skipped Py_SETREF</span>
 <span class="comment">// skipped Py_XSETREF</span>
 
-<span class="comment">// skipped _PyNone_Type</span>
-<span class="comment">// skipped _PyNotImplemented_Type</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">windows</span>, <span class="ident">link</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;pythonXY&quot;</span>))]</span>
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">_PyNone_Type</span>: <span class="ident">PyTypeObject</span>;
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">_PyNotImplemented_Type</span>: <span class="ident">PyTypeObject</span>;
+}
 
 <span class="comment">// skipped _Py_SwappedOp</span>
 
