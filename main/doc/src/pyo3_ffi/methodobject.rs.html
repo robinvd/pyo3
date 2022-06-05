@@ -247,7 +247,6 @@
 <span id="240">240</span>
 <span id="241">241</span>
 <span id="242">242</span>
-<span id="243">243</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::object</span>::{<span class="ident">PyObject</span>, <span class="ident">PyTypeObject</span>, <span class="ident">Py_TYPE</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">Py_3_9</span>)]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::PyObject_TypeCheck</span>;
@@ -260,7 +259,6 @@
     <span class="kw">pub</span> <span class="ident">m_ml</span>: <span class="kw-2">*mut</span> <span class="ident">PyMethodDef</span>,
     <span class="kw">pub</span> <span class="ident">m_self</span>: <span class="kw-2">*mut</span> <span class="ident">PyObject</span>,
     <span class="kw">pub</span> <span class="ident">m_module</span>: <span class="kw-2">*mut</span> <span class="ident">PyObject</span>,
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
     <span class="kw">pub</span> <span class="ident">m_weakreflist</span>: <span class="kw-2">*mut</span> <span class="ident">PyObject</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
     <span class="kw">pub</span> <span class="ident">vectorcall</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::vectorcallfunc</span><span class="op">&gt;</span>,
