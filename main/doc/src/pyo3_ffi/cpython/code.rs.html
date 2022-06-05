@@ -223,11 +223,6 @@
 <span id="216">216</span>
 <span id="217">217</span>
 <span id="218">218</span>
-<span id="219">219</span>
-<span id="220">220</span>
-<span id="221">221</span>
-<span id="222">222</span>
-<span id="223">223</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::object</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::pyport::Py_ssize_t</span>;
 
@@ -241,13 +236,15 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">Py_3_8</span>, <span class="ident">not</span>(<span class="ident">PyPy</span>), <span class="ident">not</span>(<span class="ident">Py_3_11</span>)))]</span>
 <span class="macro">opaque_struct!</span>(<span class="ident">_PyOpcache</span>);
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>), <span class="ident">not</span>(<span class="ident">Py_3_8</span>)))]</span>
+<span class="macro">opaque_struct!</span>(<span class="ident">PyCodeObject</span>);
+
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>), <span class="ident">Py_3_8</span>, <span class="ident">not</span>(<span class="ident">Py_3_11</span>)))]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PyCodeObject</span> {
     <span class="kw">pub</span> <span class="ident">ob_base</span>: <span class="ident">PyObject</span>,
     <span class="kw">pub</span> <span class="ident">co_argcount</span>: <span class="ident">c_int</span>,
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">Py_3_8</span>)]</span>
     <span class="kw">pub</span> <span class="ident">co_posonlyargcount</span>: <span class="ident">c_int</span>,
     <span class="kw">pub</span> <span class="ident">co_kwonlyargcount</span>: <span class="ident">c_int</span>,
     <span class="kw">pub</span> <span class="ident">co_nlocals</span>: <span class="ident">c_int</span>,
@@ -270,13 +267,9 @@
     <span class="kw">pub</span> <span class="ident">co_zombieframe</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="kw">pub</span> <span class="ident">co_weakreflist</span>: <span class="kw-2">*mut</span> <span class="ident">PyObject</span>,
     <span class="kw">pub</span> <span class="ident">co_extra</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">Py_3_8</span>)]</span>
     <span class="kw">pub</span> <span class="ident">co_opcache_map</span>: <span class="kw-2">*mut</span> <span class="ident">c_uchar</span>,
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">Py_3_8</span>, <span class="ident">not</span>(<span class="ident">Py_3_11</span>)))]</span>
     <span class="kw">pub</span> <span class="ident">co_opcache</span>: <span class="kw-2">*mut</span> <span class="ident">_PyOpcache</span>,
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">Py_3_8</span>)]</span>
     <span class="kw">pub</span> <span class="ident">co_opcache_flag</span>: <span class="ident">c_int</span>,
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">Py_3_8</span>)]</span>
     <span class="kw">pub</span> <span class="ident">co_opcache_size</span>: <span class="ident">c_uchar</span>,
 }
 
@@ -310,9 +303,6 @@
     <span class="kw">pub</span> <span class="ident">co_extra</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="kw">pub</span> <span class="ident">co_code_adaptive</span>: [<span class="ident">c_char</span>; <span class="number">1</span>],
 }
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>), <span class="ident">Py_3_7</span>, <span class="ident">not</span>(<span class="ident">Py_3_8</span>)))]</span>
-<span class="macro">opaque_struct!</span>(<span class="ident">PyCodeObject</span>);
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">PyPy</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
