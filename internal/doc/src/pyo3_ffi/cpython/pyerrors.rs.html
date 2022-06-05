@@ -171,6 +171,12 @@
 <span id="164">164</span>
 <span id="165">165</span>
 <span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::PyObject</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Py_ssize_t</span>;
@@ -293,11 +299,17 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PyStopIterationObject</span> {
     <span class="kw">pub</span> <span class="ident">ob_base</span>: <span class="ident">PyObject</span>,
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
     <span class="kw">pub</span> <span class="ident">dict</span>: <span class="kw-2">*mut</span> <span class="ident">PyObject</span>,
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
     <span class="kw">pub</span> <span class="ident">args</span>: <span class="kw-2">*mut</span> <span class="ident">PyObject</span>,
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
     <span class="kw">pub</span> <span class="ident">traceback</span>: <span class="kw-2">*mut</span> <span class="ident">PyObject</span>,
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
     <span class="kw">pub</span> <span class="ident">context</span>: <span class="kw-2">*mut</span> <span class="ident">PyObject</span>,
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
     <span class="kw">pub</span> <span class="ident">cause</span>: <span class="kw-2">*mut</span> <span class="ident">PyObject</span>,
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">PyPy</span>))]</span>
     <span class="kw">pub</span> <span class="ident">suppress_context</span>: <span class="ident">char</span>,
 
     <span class="kw">pub</span> <span class="ident">value</span>: <span class="kw-2">*mut</span> <span class="ident">PyObject</span>,
