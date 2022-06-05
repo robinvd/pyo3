@@ -386,7 +386,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">Py_3_11</span>)]</span>
     <span class="kw">pub</span> <span class="ident">_is_python_build</span>: <span class="ident">c_int</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">Py_3_9</span>, <span class="ident">not</span>(<span class="ident">Py_3_10</span>)))]</span>
-    <span class="kw">pub</span> <span class="ident">orig_argv</span>: <span class="ident">PyWideStringList</span>,
+    <span class="kw">pub</span> <span class="ident">_orig_argv</span>: <span class="ident">PyWideStringList</span>,
 }
 
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
