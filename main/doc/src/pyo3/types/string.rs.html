@@ -645,16 +645,68 @@
 <span id="638">638</span>
 <span id="639">639</span>
 <span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
+<span id="682">682</span>
+<span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
+<span id="688">688</span>
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
 </pre><pre class="rust"><code><span class="comment">// Copyright (c) 2017-present PyO3 Project and Contributors</span>
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">Py_LIMITED_API</span>), <span class="ident">target_endian</span> <span class="op">=</span> <span class="string">&quot;little&quot;</span>))]</span>
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::exceptions::PyUnicodeDecodeError</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types::PyBytes</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">ffi</span>, <span class="ident">AsPyPointer</span>, <span class="ident">FromPyObject</span>, <span class="ident">IntoPy</span>, <span class="ident">Py</span>, <span class="ident">PyAny</span>, <span class="ident">PyObject</span>, <span class="ident">PyResult</span>, <span class="ident">PyTryFrom</span>, <span class="ident">Python</span>,
-    <span class="ident">ToPyObject</span>,
+    <span class="ident">exceptions</span>, <span class="ident">ffi</span>, <span class="ident">AsPyPointer</span>, <span class="ident">FromPyObject</span>, <span class="ident">IntoPy</span>, <span class="ident">Py</span>, <span class="ident">PyAny</span>, <span class="ident">PyObject</span>, <span class="ident">PyResult</span>, <span class="ident">PyTryFrom</span>,
+    <span class="ident">Python</span>, <span class="ident">ToPyObject</span>,
 };
 <span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
+<span class="kw">use</span> <span class="ident">std::ffi::CStr</span>;
 <span class="kw">use</span> <span class="ident">std::os::raw::c_char</span>;
 <span class="kw">use</span> <span class="ident">std::str</span>;
 
@@ -716,7 +768,6 @@
     <span class="doccomment">/// C APIs that skip input validation (like `PyUnicode_FromKindAndData`) and should</span>
     <span class="doccomment">/// never occur for strings that were created from Python code.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="self">self</span>, <span class="ident">py</span>: <span class="ident">Python</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="ident">std::ffi::CStr</span>;
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident"><span class="self">Self</span>::Ucs1</span>(<span class="ident">data</span>) =&gt; <span class="kw">match</span> <span class="ident">str::from_utf8</span>(<span class="ident">data</span>) {
                 <span class="prelude-val">Ok</span>(<span class="ident">s</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Cow::Borrowed</span>(<span class="ident">s</span>)),
@@ -871,6 +922,29 @@
                 };
                 <span class="ident">String::from_utf8_lossy</span>(<span class="ident">bytes</span>.<span class="ident">as_bytes</span>())
             }
+        }
+    }
+
+    <span class="doccomment">/// Returns an iterator over the PyString.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Does not allocate anything (python or rust heap).</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chars</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl</span> <span class="ident">ExactSizeIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;_</span>{
+        <span class="kw">unsafe</span> {
+            <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">ffi::PyUnicode_GetLength</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>());
+            (<span class="number">0</span>..<span class="ident">len</span>).<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">i</span><span class="op">|</span> {
+                <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">ffi::PyUnicode_ReadChar</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="ident">i</span>);
+                <span class="kw">match</span> <span class="ident">char::from_u32</span>(<span class="ident">c</span>) {
+                    <span class="prelude-val">Some</span>(<span class="ident">c</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">c</span>),
+                    <span class="prelude-val">None</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">exceptions::PyUnicodeDecodeError::new</span>(
+                        <span class="self">self</span>.<span class="ident">py</span>(),
+                        <span class="ident">CStr::from_bytes_with_nul</span>(<span class="string">b&quot;utf-8\0&quot;</span>).<span class="ident">unwrap</span>(),
+                        <span class="kw-2">&amp;</span><span class="ident">c</span>.<span class="ident">to_ne_bytes</span>(),
+                        <span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>..(<span class="ident">i</span> <span class="op">+</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">usize</span>,
+                        <span class="ident">CStr::from_bytes_with_nul</span>(<span class="string">b&quot;invalid codepoint\0&quot;</span>).<span class="ident">unwrap</span>(),
+                    )<span class="question-mark">?</span>
+                    .<span class="ident">into</span>()),
+                }
+            })
         }
     }
 
@@ -1268,6 +1342,34 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_string_chars</span>() {
+        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">PyString</span> <span class="op">=</span> <span class="ident">PyString::new</span>(<span class="ident">py</span>, <span class="string">&quot;哈哈🐈&quot;</span>);
+            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">chars</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+            <span class="macro">assert_eq!</span>(<span class="ident">result</span>.<span class="ident">unwrap</span>(), <span class="string">&quot;哈哈🐈&quot;</span>);
+        });
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_string_chars_ucs4_invalid</span>() {
+        <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
+            <span class="comment">// U+20000 (valid) &amp; U+d800 (never valid)</span>
+            <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="string">b&quot;\x00\x00\x02\x00\x00\xd8\x00\x00\x00\x00\x00\x00&quot;</span>;
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+                <span class="ident"><span class="kw">crate</span>::ffi::PyUnicode_FromKindAndData</span>(
+                    <span class="ident"><span class="kw">crate</span>::ffi::PyUnicode_4BYTE_KIND</span> <span class="kw">as</span> <span class="kw">_</span>,
+                    <span class="ident">buffer</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
+                    <span class="number">2</span>,
+                )
+            };
+            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>());
+            <span class="kw">let</span> <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">PyString</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">py</span>.<span class="ident">from_owned_ptr</span>(<span class="ident">ptr</span>) };
+            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">chars</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>().<span class="ident">unwrap_err</span>();
+            <span class="macro">assert!</span>(<span class="ident">err</span>.<span class="ident">get_type</span>(<span class="ident">py</span>).<span class="ident">is</span>(<span class="ident">PyUnicodeDecodeError::type_object</span>(<span class="ident">py</span>)));
+        });
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_intern_string</span>() {
         <span class="ident">Python::with_gil</span>(<span class="op">|</span><span class="ident">py</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">py_string1</span> <span class="op">=</span> <span class="ident">PyString::intern</span>(<span class="ident">py</span>, <span class="string">&quot;foo&quot;</span>);
@@ -1286,5 +1388,5 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (7466d5492 2022-06-08)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="pyo3" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0-nightly (546c826f0 2022-06-12)" ></div>
 </body></html>
