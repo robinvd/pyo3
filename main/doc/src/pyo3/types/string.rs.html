@@ -928,7 +928,7 @@
     <span class="doccomment">/// Returns an iterator over the PyString.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Does not allocate anything (python or rust heap).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chars</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl</span> <span class="ident">ExactSizeIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;_</span>{
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chars</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">impl</span> <span class="ident">ExactSizeIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">PyResult</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;_</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">ffi::PyUnicode_GetLength</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>());
             (<span class="number">0</span>..<span class="ident">len</span>).<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">i</span><span class="op">|</span> {
